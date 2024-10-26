@@ -23,7 +23,7 @@ export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }:
 
   const handleSave = () => {
     if (value.trim()) {
-      editTodo(todo.id, value)
+      editTodo(todo.id, value.trim())
     }
     setIsEditing(false)
   }
@@ -56,7 +56,7 @@ export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }:
         <span
           className={cn(
             todo.completed && 'line-through',
-            'cursor-pointer block text-neutral-600 pl-2'
+            'cursor-pointer block text-neutral-600 text-wrap pl-2'
           )}
           onClick={() => toggleComplete(todo.id)}
         >
