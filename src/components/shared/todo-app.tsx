@@ -25,6 +25,10 @@ export default function TodoApp() {
     setTodos(todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)))
   }
 
+  const editTodo = (id: number, newText: string) => {
+    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)))
+  }
+
   const getFilteredTodos = (): Todo[] => {
     if (filter === 'active') return todos.filter((todo) => !todo.completed)
     if (filter === 'completed') return todos.filter((todo) => todo.completed)
@@ -34,7 +38,7 @@ export default function TodoApp() {
   const activeTodosCount = todos.filter((todo) => !todo.completed).length
 
   return (
-    <div className='w-full max-w-screen-sm px-4 font-mono flex flex-col gap-4'>
+    <div className='w-full max-w-screen-sm px-4 mx-auto font-mono flex flex-col gap-4'>
       <h1 className='text-blue-600 uppercase text-2xl text-center'>Todo</h1>
       <TodoForm addTodo={addTodo} />
 
@@ -55,6 +59,7 @@ export default function TodoApp() {
             todos={getFilteredTodos()}
             toggleComplete={toggleComplete}
             deleteTodo={deleteTodo}
+            editTodo={editTodo}
           />
         </>
       ) : (
