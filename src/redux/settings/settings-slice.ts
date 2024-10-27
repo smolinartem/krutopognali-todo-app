@@ -1,27 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface SettingsState {
+export interface SettingsState {
   priorityOn: boolean
   categoryOn: boolean
+  filtersOn: boolean
+  countActiveOn: boolean
+  clearCompletedOn: boolean
 }
 
 const initialState: SettingsState = {
   priorityOn: false,
   categoryOn: false,
+  filtersOn: true,
+  countActiveOn: false,
+  clearCompletedOn: false,
 }
 
 const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    togglePriority(state) {
-      state.priorityOn = !state.priorityOn
-    },
-    toggleCategory(state) {
-      state.categoryOn = !state.categoryOn
+    toggleOption: (state, action: PayloadAction<keyof SettingsState>) => {
+      state[action.payload] = !state[action.payload]
     },
   },
 })
 
-export const { togglePriority, toggleCategory } = settingsSlice.actions
+export const { toggleOption } = settingsSlice.actions
 export default settingsSlice.reducer

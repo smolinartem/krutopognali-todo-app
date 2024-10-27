@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button } from '../ui/button'
-import { Settings } from 'lucide-react'
+import { Search, Settings } from 'lucide-react'
 // --redux--
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteAllCompleted } from '@/redux/todos/todos-slice'
@@ -14,6 +14,9 @@ import TodoList from './todo-list'
 export default function TodoApp() {
   const dispatch = useDispatch()
   const { todos } = useSelector((state: RootState) => state.todos)
+  const { filtersOn, countActiveOn, clearCompletedOn } = useSelector(
+    (state: RootState) => state.settings
+  )
 
   const [showSettings, setShowSettings] = useState(false)
 
@@ -23,10 +26,20 @@ export default function TodoApp() {
 
   return (
     <div className='w-full max-w-screen-sm px-4 mx-auto font-mono flex flex-col gap-4'>
-      <div className='flex items-center gap-4'>
-        <h1 className='text-blue-600 lowercase text-2xl text-center'>krutopognali-todo-app</h1>
-        <Button onClick={() => setShowSettings(!showSettings)} size='icon' variant='outline'>
+      <div className='flex items-center gap-2'>
+        <h1 className='text-blue-600 lowercase text-xl sm:text-2xl text-center'>
+          krutopognali-todo-app
+        </h1>
+        <Button
+          className='shrink-0'
+          onClick={() => setShowSettings(!showSettings)}
+          size='icon'
+          variant='outline'
+        >
           <Settings />
+        </Button>
+        <Button className='shrink-0' size='icon' variant='outline'>
+          <Search />
         </Button>
       </div>
 
@@ -34,17 +47,13 @@ export default function TodoApp() {
 
       <TodoForm />
 
+      {filtersOn && <TodoFilters />}
+      {countActiveOn && <span className='block'>Active tasks: {activeTodosCount}</span>}
+      {clearCompletedOn && (
+        <Button onClick={() => dispatch(deleteAllCompleted())}>Clear completed</Button>
+      )}
       {todos.length > 0 ? (
-        <>
-          <TodoFilters />
-
-          <div className='flex items-center justify-between'>
-            <span className='block'>Active tasks: {activeTodosCount}</span>
-            <Button onClick={() => dispatch(deleteAllCompleted())}>Clear completed</Button>
-          </div>
-
-          <TodoList />
-        </>
+        <TodoList />
       ) : (
         <div className='text-neutral-600 border py-8 flex flex-col'>
           <span className='text-center'>No tasks yet.</span>
