@@ -2,16 +2,14 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '@/redux/store'
+import { addTodo } from '@/redux/todos/todos-slice'
 import type { Priority } from '@/types/index.types'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
-interface Props {
-  addTodo: (text: string, priority: Priority, category: string) => void
-}
-
-export default function TodoForm({ addTodo }: Props) {
+export default function TodoForm() {
+  const dispatch = useDispatch()
   const { priorityOn } = useSelector((state: RootState) => state.settings)
   const { categoryOn } = useSelector((state: RootState) => state.settings)
 
@@ -22,7 +20,7 @@ export default function TodoForm({ addTodo }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!value.trim()) return
-    addTodo(value.trim(), priorityOn ? priority : 'medium', categoryOn ? category : '')
+    dispatch(addTodo(value.trim(), priorityOn ? priority : 'medium', categoryOn ? category : ''))
     setValue('')
     setCategory('')
   }

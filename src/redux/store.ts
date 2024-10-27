@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import settingsReducer from './settings/settings-slice'
+import todoReducer from './todos/todos-slice'
 
 const store = configureStore({
   reducer: {
     settings: settingsReducer,
+    todos: todoReducer,
   },
 })
 

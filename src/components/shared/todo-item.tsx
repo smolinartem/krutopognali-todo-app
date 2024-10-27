@@ -6,14 +6,11 @@ import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 
 import { Input } from '../ui/input'
+import { useDispatch } from 'react-redux'
+import { toggleTodo, deleteTodo, editTodo } from '@/redux/todos/todos-slice'
 
-interface Props {
-  todo: Todo
-  toggleComplete: (id: number) => void
-  deleteTodo: (id: number) => void
-  editTodo: (id: number, newText: string) => void
-}
-export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }: Props) {
+export default function TodoItem({ todo }: { todo: Todo }) {
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [value, setValue] = useState<string>(todo.text)
 
@@ -23,7 +20,7 @@ export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }:
 
   const handleSave = () => {
     if (value.trim()) {
-      editTodo(todo.id, value.trim())
+      dispatch(editTodo({ id: todo.id, text: value.trim() }))
     }
     setIsEditing(false)
   }
@@ -58,7 +55,7 @@ export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }:
             todo.completed && 'line-through',
             'cursor-pointer block text-neutral-600 text-wrap pl-2'
           )}
-          onClick={() => toggleComplete(todo.id)}
+          onClick={() => dispatch(toggleTodo(todo.id))}
         >
           {todo.text}
         </span>
@@ -71,7 +68,7 @@ export default function TodoItem({ todo, toggleComplete, deleteTodo, editTodo }:
           </Button>
         )}
         <Button
-          onClick={() => deleteTodo(todo.id)}
+          onClick={() => dispatch(deleteTodo(todo.id))}
           className='shrink-0'
           variant='ghost'
           size='icon'
