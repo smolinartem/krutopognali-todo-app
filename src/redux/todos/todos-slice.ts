@@ -4,11 +4,13 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit'
 interface TodoState {
   todos: Todo[]
   filter: 'all' | 'active' | 'completed'
+  searchQuery: string
 }
 
 const initialState: TodoState = {
   todos: [],
   filter: 'all',
+  searchQuery: '',
 }
 
 const todoSlice = createSlice({
@@ -46,10 +48,20 @@ const todoSlice = createSlice({
     setFilter: (state, action: PayloadAction<'all' | 'active' | 'completed'>) => {
       state.filter = action.payload
     },
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload
+    },
   },
 })
 
-export const { addTodo, toggleTodo, deleteTodo, editTodo, deleteAllCompleted, setFilter } =
-  todoSlice.actions
+export const {
+  addTodo,
+  toggleTodo,
+  deleteTodo,
+  editTodo,
+  deleteAllCompleted,
+  setFilter,
+  setSearchQuery,
+} = todoSlice.actions
 
 export default todoSlice.reducer

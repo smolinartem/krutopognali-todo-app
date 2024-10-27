@@ -3,18 +3,20 @@ import { Button } from '../ui/button'
 import { Search, Settings } from 'lucide-react'
 // --redux--
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAllCompleted } from '@/redux/todos/todos-slice'
 import { RootState } from '@/redux/store'
+import { deleteAllCompleted } from '@/redux/todos/todos-slice'
+import { toggleSearch } from '@/redux/settings/settings-slice'
 // --components--
 import TodoFilters from './todo-filters'
 import TodoSettings from './todo-settings'
 import TodoForm from './todo-form'
 import TodoList from './todo-list'
+import TodoSearch from './todo-search'
 
 export default function TodoApp() {
   const dispatch = useDispatch()
   const { todos } = useSelector((state: RootState) => state.todos)
-  const { filtersOn, countActiveOn, clearCompletedOn } = useSelector(
+  const { filtersOn, countActiveOn, clearCompletedOn, searchOn } = useSelector(
     (state: RootState) => state.settings
   )
 
@@ -38,13 +40,19 @@ export default function TodoApp() {
         >
           <Settings />
         </Button>
-        <Button className='shrink-0' size='icon' variant='outline'>
+        <Button
+          className='shrink-0'
+          onClick={() => dispatch(toggleSearch())}
+          size='icon'
+          variant='outline'
+        >
           <Search />
         </Button>
       </div>
 
       {showSettings && <TodoSettings />}
 
+      {searchOn && <TodoSearch />}
       <TodoForm />
 
       {filtersOn && <TodoFilters />}
